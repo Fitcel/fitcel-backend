@@ -13,7 +13,6 @@ type User struct {
 	Email     string     `json:"email"`
 	CreatedAt *time.Time `json:"createdAt"`
 	UpdatedAt *time.Time `json:"updatedAt"`
-	DeletedAt *time.Time `json:"deletedAt"`
 	DietID    *uint
 	Diet      *Diet
 }
@@ -34,6 +33,6 @@ func (m Model) AddUser(user User) (*User, error) {
 	err = m.DB.Create(&user).Error
 	return &user, err
 }
-func (m Model) UpdateUser(userID uint, dietID uint) error {
-	return m.DB.Model(User{ID: userID}).Update("diet_id", dietID).Error
+func (m Model) UpdateUser(UUID string, dietID uint) error {
+	return m.DB.Debug().Model(&User{}).Where("uuid", UUID).Update("diet_id", dietID).Error
 }

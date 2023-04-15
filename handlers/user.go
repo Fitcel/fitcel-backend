@@ -21,7 +21,7 @@ func (h Handler) AddUser(c echo.Context) error {
 }
 
 func (h Handler) UpdateUser(c echo.Context) error {
-	userID := c.QueryParam("userID")
+	userID := c.QueryParam("UUID")
 	dietID := c.QueryParam("dietID")
 	if err := h.Controller.UpdateUser(userID, dietID); err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
