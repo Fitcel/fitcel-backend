@@ -2,9 +2,11 @@ package main
 
 import (
 	"fitcel-backend/configuration"
+	"os"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	"github.com/spf13/viper"
 )
 
 func main() {
@@ -20,5 +22,10 @@ func main() {
 
 	e.POST("/addUser", config.Handler.AddUser)
 	e.PUT("updateUser", config.Handler.UpdateUser)
-	e.Logger.Fatal(e.Start(":8080"))
+	runmode := viper.GetString("runmode")
+	PORT := os.Getenv("PORT")
+	if runmode == "dev" {
+		PORT = "8080"
+	}
+	e.Logger.Fatal(e.Start(":" + PORT))
 }
