@@ -6,6 +6,7 @@ import (
 	"fitcel-backend/handlers"
 	"fitcel-backend/models"
 	"fitcel-backend/services"
+	"github.com/spf13/viper"
 	"log"
 )
 
@@ -13,9 +14,21 @@ type Configuration struct {
 	Handler handlers.Handler
 }
 
+func getRunmode() string {
+	viper.AddConfigPath("./conf")
+	viper.SetConfigName("env")
+	if err := viper.ReadInConfig(); err != nil {
+		log.Fatalf("fatal error config file: %s", err.Error())
+	}
+	viper.SetEnvPrefix("global")
+	runmode := viper.GetString("runmode")
+	return runmode
+}
+
 func ConfigurationInit() Configuration {
-	db := dbConnect()
-	firbaseApp := firebaseInitialization()
+	runmode := getRunmode()
+	db := dbConnect(runmode)
+	firbaseApp := firebaseInitialization(runmode)
 	firbaseStorage, err := firbaseApp.Storage(context.Background())
 	if err != nil {
 		log.Panic("error while creating firebaase storage client", err)
@@ -24,14 +37,15 @@ func ConfigurationInit() Configuration {
 	if err != nil {
 		log.Panic("error while accessing storage bucket", err)
 	}
-
+	foodApiKey := viper.GetString(runmode + ".services.apininja.food.apiKey")
+	foodApiUrl := viper.GetString(runmode + ".services.apininja.food.apiUrl")
 	return Configuration{
 		Handler: handlers.Handler{
 			Controller: controllers.Controller{
 				Model: models.Model{DB: db},
 				Services: services.Service{
-					Food_Api_KEY:  "IAkaKHtBzs/uJ81Ezscwkg==dZlQxOQBqn4LbADY",
-					Food_Api_URL:  "https://api.api-ninjas.com/v1/nutrition?query=",
+					Food_Api_KEY:  foodApiKey,
+					Food_Api_URL:  foodApiUrl,
 					StorageBucket: storgageBucket,
 				},
 			},
