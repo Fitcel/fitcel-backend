@@ -25,8 +25,8 @@ func main() {
 
 	// User Endpoints
 	e.POST("/addUser", config.Handler.AddUser)
-	e.GET("getUserByUUID", config.Handler.GetUserByUUID)
-	e.PUT("updateUser", config.Handler.UpdateUser)
+	e.GET("/getUserByUUID", config.Handler.GetUserByUUID)
+	e.PUT("/updateUser", config.Handler.UpdateUser)
 
 	runmode := viper.GetString("runmode")
 	PORT := os.Getenv("PORT")

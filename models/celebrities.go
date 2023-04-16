@@ -51,8 +51,6 @@ func (m *Model) GetCelebrity(id uint) (Celebrity, error) {
 
 func (m *Model) GetCelebritybyDietID(dietID uint) (Celebrity, error) {
 	celeb := Celebrity{}
-	err := m.DB.Debug().Model(&User{
-		DietID: &dietID,
-	}).First(&celeb).Error
+	err := m.DB.Debug().Where(&Celebrity{Diet: Diet{ID: dietID}}).First(&celeb).Error
 	return celeb, err
 }
