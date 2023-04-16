@@ -1,2 +1,3 @@
 .devenv
-conf/
+conf/env.yml
+conf/fitcel.json

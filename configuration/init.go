@@ -6,8 +6,10 @@ import (
 	"fitcel-backend/handlers"
 	"fitcel-backend/models"
 	"fitcel-backend/services"
-	"github.com/spf13/viper"
 	"log"
+	"os"
+
+	"github.com/spf13/viper"
 )
 
 type Configuration struct {
@@ -15,7 +17,12 @@ type Configuration struct {
 }
 
 func getRunmode() string {
-	viper.AddConfigPath("./conf")
+	render := os.Getenv("RENDER")
+	if render != "" {
+		viper.AddConfigPath("/etc/secrets")
+	} else {
+		viper.AddConfigPath("./conf")
+	}
 	viper.SetConfigName("env")
 	if err := viper.ReadInConfig(); err != nil {
 		log.Fatalf("fatal error config file: %s", err.Error())

@@ -10,7 +10,8 @@ import (
 )
 
 func firebaseInitialization(runmode string) *firebase.App {
-	opt := option.WithCredentialsFile("./conf/fitcel.json")
+	credentialFile := viper.GetString(runmode + ".services.firebase.service_file")
+	opt := option.WithCredentialsFile(credentialFile)
 	bucketName := viper.GetString(runmode + ".services.firebase.bucket")
 	config := &firebase.Config{
 		StorageBucket: bucketName,
