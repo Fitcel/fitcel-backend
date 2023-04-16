@@ -14,14 +14,20 @@ func main() {
 	e := echo.New()
 	e.Use(middleware.Logger())
 
+	// Celebrity Endpoints
 	e.POST("/addCeleb", config.Handler.AddCeleb)
-	e.GET("getCelebs", config.Handler.GetCelebs)
-	e.GET("getCeleb", config.Handler.GetCeleb)
+	e.GET("/getCelebs", config.Handler.GetCelebs)
+	e.GET("/getCeleb", config.Handler.GetCeleb)
+	e.GET("/getCelebByDietID", config.Handler.GetCelebByDietID)
 
-	e.GET("getCelebDiet", config.Handler.GetCelebDiet)
+	// Celeb Diet Endpoint
+	e.GET("/getCelebDiet", config.Handler.GetCelebDiet)
 
+	// User Endpoints
 	e.POST("/addUser", config.Handler.AddUser)
+	e.GET("getUserByUUID", config.Handler.GetUserByUUID)
 	e.PUT("updateUser", config.Handler.UpdateUser)
+
 	runmode := viper.GetString("runmode")
 	PORT := os.Getenv("PORT")
 	if runmode == "dev" {

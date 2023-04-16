@@ -8,7 +8,7 @@ import (
 )
 
 func (c *Controller) AddCeleb(jsonInput string, avatar *multipart.FileHeader) error {
-	celeb := new(models.Celebrities)
+	celeb := new(models.Celebrity)
 	json.Unmarshal([]byte(jsonInput), celeb)
 	celeb.DietType = celeb.Diet.Type
 
@@ -29,23 +29,31 @@ func (c *Controller) AddCeleb(jsonInput string, avatar *multipart.FileHeader) er
 	return nil
 }
 
-func (c *Controller) GetCelebs() ([]models.Celebrities, error) {
+func (c *Controller) GetCelebs() ([]models.Celebrity, error) {
 	celebs, err := c.Model.GetCelebrities()
 	if err != nil {
-		return []models.Celebrities{}, err
+		return []models.Celebrity{}, err
 	}
 	return celebs, nil
 }
 
-func (c *Controller) GetCeleb(id string) (models.Celebrities, error) {
+func (c *Controller) GetCeleb(id string) (models.Celebrity, error) {
 	celeb_id, err := strconv.Atoi(id)
 	celeb, err := c.Model.GetCelebrity(uint(celeb_id))
 	if err != nil {
-		return models.Celebrities{}, err
+		return models.Celebrity{}, err
 	}
 	return celeb, nil
 }
 
+func (c *Controller) GetCelebByDietID(dietID string) (models.Celebrity, error) {
+	celeb_id, err := strconv.Atoi(dietID)
+	celeb, err := c.Model.GetCelebritybyDietID(uint(celeb_id))
+	if err != nil {
+		return models.Celebrity{}, err
+	}
+	return celeb, nil
+}
 func (c *Controller) storeinCloud(name string, avatar *multipart.FileHeader) (string, error) {
 	src, err := avatar.Open()
 	if err != nil {

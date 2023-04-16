@@ -21,6 +21,12 @@ func (u *User) TableName() string {
 	return "users"
 }
 
+func (m Model) GetUserByUUID(uuid string) (*User, error) {
+	user := new(User)
+	err := m.DB.Debug().Where(User{UUID: uuid}).First(user).Error
+	return user, err
+}
+
 func (m Model) AddUser(user User) (*User, error) {
 	var check User
 	err := m.DB.Where(&User{UUID: user.UUID}).First(&check).Error
@@ -33,6 +39,7 @@ func (m Model) AddUser(user User) (*User, error) {
 	err = m.DB.Create(&user).Error
 	return &user, err
 }
+
 func (m Model) UpdateUser(UUID string, dietID uint) error {
 	return m.DB.Debug().Model(&User{}).Where("uuid", UUID).Update("diet_id", dietID).Error
 }

@@ -7,11 +7,7 @@ import (
 	"gorm.io/gorm"
 )
 
-type Model struct {
-	DB *gorm.DB
-}
-
-type Celebrities struct {
+type Celebrity struct {
 	ID       uint     `json:"id" gorm:"primarykey; not null"`
 	Name     string   `json:"name" gorm:"column:name"`
 	Avatar   string   `json:"avatar" gorm:"column:avatar; unique"`
@@ -20,13 +16,13 @@ type Celebrities struct {
 	Diet     Diet     `json:"celebrityDiet"`
 }
 
-func (u *Celebrities) TableName() string {
+func (u *Celebrity) TableName() string {
 	return "celebrities"
 }
 
-func (m *Model) AddCelebrity(celeb *Celebrities, avatarURL string) error {
-	var check Celebrities
-	err := m.DB.Where(&Celebrities{Name: celeb.Name}).First(&check).Error
+func (m *Model) AddCelebrity(celeb *Celebrity, avatarURL string) error {
+	var check Celebrity
+	err := m.DB.Where(&Celebrity{Name: celeb.Name}).First(&check).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return err
 	}
@@ -39,16 +35,24 @@ func (m *Model) AddCelebrity(celeb *Celebrities, avatarURL string) error {
 	return err
 }
 
-func (m *Model) GetCelebrities() ([]Celebrities, error) {
-	var celebs []Celebrities
+func (m *Model) GetCelebrities() ([]Celebrity, error) {
+	var celebs []Celebrity
 	// err := m.DB.Find(&celebs).Error
-	err := m.DB.Model(new(Celebrities)).Find(&celebs).Error
+	err := m.DB.Model(new(Celebrity)).Find(&celebs).Error
 
 	return celebs, err
 }
 
-func (m *Model) GetCelebrity(id uint) (Celebrities, error) {
-	celeb := Celebrities{ID: id}
+func (m *Model) GetCelebrity(id uint) (Celebrity, error) {
+	celeb := Celebrity{ID: id}
 	err := m.DB.Debug().First(&celeb).Error
+	return celeb, err
+}
+
+func (m *Model) GetCelebritybyDietID(dietID uint) (Celebrity, error) {
+	celeb := Celebrity{}
+	err := m.DB.Debug().Model(&User{
+		DietID: &dietID,
+	}).First(&celeb).Error
 	return celeb, err
 }

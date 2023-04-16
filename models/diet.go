@@ -1,11 +1,11 @@
 package models
 
 type Diet struct {
-	ID            uint     `json:"id"`
-	Type          dietType `json:"dietType"`
-	Description   string   `json:"description"`
-	CelebritiesID uint     `json:"celeb_id"`
-	Meals         []Meal   `json:"meals"`
+	ID          uint     `json:"id"`
+	Type        dietType `json:"dietType"`
+	Description string   `json:"description"`
+	CelebrityID uint     `json:"celeb_id"`
+	Meals       []Meal   `json:"meals"`
 }
 
 func (u *Diet) TableName() string {
@@ -24,10 +24,10 @@ func (u *Meal) TableName() string {
 }
 
 type Food struct {
-	ID       uint   `json:"-"`
-	Name     string `json:"name"`
-	Calories float64
-	MealID   uint `json:"-"`
+	ID       uint    `json:"-"`
+	Name     string  `json:"name"`
+	Calories float64 `json:"calories"`
+	MealID   uint    `json:"-"`
 }
 
 func (u *Food) TableName() string {

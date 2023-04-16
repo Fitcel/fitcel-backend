@@ -9,6 +9,10 @@ func (c *Controller) AddUser(user models.User) (*models.User, error) {
 	return c.Model.AddUser(user)
 }
 
+func (c *Controller) GetUserByUUID(uuid string) (*models.User, error) {
+	return c.Model.GetUserByUUID(uuid)
+}
+
 func (c *Controller) UpdateUser(UUID string, dietID string) error {
 	dietid, err := strconv.Atoi(dietID)
 	if err != nil {

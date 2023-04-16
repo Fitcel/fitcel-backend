@@ -20,6 +20,15 @@ func (h Handler) AddUser(c echo.Context) error {
 	return c.JSON(http.StatusOK, user)
 }
 
+func (h Handler) GetUserByUUID(c echo.Context) error {
+	uuid := c.QueryParam("uuid")
+	user, err := h.Controller.GetUserByUUID(uuid)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, err)
+	}
+	return c.JSON(http.StatusOK, user)
+}
+
 func (h Handler) UpdateUser(c echo.Context) error {
 	userID := c.QueryParam("UUID")
 	dietID := c.QueryParam("dietID")

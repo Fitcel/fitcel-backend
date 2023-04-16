@@ -4,8 +4,13 @@ import (
 	"encoding/json"
 	"fmt"
 	"strings"
+
+	"gorm.io/gorm"
 )
 
+type Model struct {
+	DB *gorm.DB
+}
 type dietType uint
 
 const (

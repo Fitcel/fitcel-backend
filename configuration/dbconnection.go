@@ -22,7 +22,7 @@ func dbConnect(runmode string) *gorm.DB {
 	if err != nil {
 		return nil
 	}
-	db.AutoMigrate(&models.Celebrities{})
+	db.AutoMigrate(&models.Celebrity{})
 	db.AutoMigrate(new(models.Diet), new(models.Food), new(models.Meal))
 	db.AutoMigrate(new(models.User))
 	return db

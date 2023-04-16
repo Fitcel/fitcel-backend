@@ -35,3 +35,11 @@ func (h *Handler) GetCeleb(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, celeb)
 }
+func (h *Handler) GetCelebByDietID(c echo.Context) error {
+	id := c.QueryParam("dietID")
+	celeb, err := h.Controller.GetCelebByDietID(id)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, err)
+	}
+	return c.JSON(http.StatusOK, celeb)
+}
