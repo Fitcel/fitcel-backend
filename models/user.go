@@ -13,8 +13,8 @@ type User struct {
 	Email     string     `json:"email"`
 	CreatedAt *time.Time `json:"createdAt"`
 	UpdatedAt *time.Time `json:"updatedAt"`
-	DietID    *uint
-	Diet      *Diet
+	DietID    *uint      `json:"diet_id"`
+	Diet      *Diet      `json:"-"`
 }
 
 func (u *User) TableName() string {
